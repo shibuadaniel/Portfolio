@@ -1,78 +1,105 @@
 (() => {
-  const carousel = document.querySelector("[data-project-carousel]");
-  if (!carousel) return;
+  const root = document.querySelector("[data-carousel]");
+  if (!root) return;
 
-  const track = carousel.querySelector("[data-project-track]");
-  const slides = Array.from(track?.querySelectorAll(".project-hero") || []);
-  const dots = Array.from(carousel.querySelectorAll("[data-project-dot]"));
-  const prevButton = carousel.querySelector("[data-project-prev]");
-  const nextButton = carousel.querySelector("[data-project-next]");
+  const track = root.querySelector("[data-carousel-track]");
+  const slides = Array.from(root.querySelectorAll("[data-carousel-slide]"));
+  const dots = Array.from(root.querySelectorAll("[data-carousel-dot]"));
+  const prevBtn = root.querySelector("[data-carousel-prev]");
+  const nextBtn = root.querySelector("[data-carousel-next]");
 
   if (!track || slides.length === 0 || dots.length === 0) return;
 
-  const scrollToIndex = (index) => {
-    const clampedIndex = Math.max(0, Math.min(slides.length - 1, index));
-    track.scrollTo({
-      left: clampedIndex * track.clientWidth,
-      behavior: "smooth",
-    });
-    setActiveDot(clampedIndex);
-    setArrowState(clampedIndex);
-  };
+  const clampIndex = (i) =>
+    Math.max(0, Math.min(slides.length - 1, i));
 
-  const setActiveDot = (index) => {
-    dots.forEach((dot, i) => {
-      const isActive = i === index;
-      dot.classList.toggle("is-active", isActive);
-      dot.setAttribute("aria-selected", isActive ? "true" : "false");
-    });
-  };
-
-  const setArrowState = (index) => {
-    if (prevButton) prevButton.disabled = index <= 0;
-    if (nextButton) nextButton.disabled = index >= slides.length - 1;
+  /** Distance between slide starts (handles subpixel layout) */
+  const slideStride = () => {
+    if (slides.length < 2) return track.clientWidth || 1;
+    return slides[1].offsetLeft - slides[0].offsetLeft || track.clientWidth || 1;
   };
 
   const activeIndexFromScroll = () => {
-    const slideWidth = track.clientWidth || 1;
-    const index = Math.round(track.scrollLeft / slideWidth);
-    return Math.max(0, Math.min(slides.length - 1, index));
+    const stride = slideStride();
+    return clampIndex(Math.round(track.scrollLeft / stride));
   };
 
-  let rafId = null;
-  const syncOnScroll = () => {
-    if (rafId !== null) return;
-    rafId = window.requestAnimationFrame(() => {
-      const index = activeIndexFromScroll();
-      setActiveDot(index);
-      setArrowState(index);
-      rafId = null;
+  /** Mobile: keep arrow overlay height in sync with stretched hero media */
+  const syncNavBand = () => {
+    const i = activeIndexFromScroll();
+    const slide = slides[i] ?? slides[0];
+    const media = slide?.querySelector(".project-hero-media");
+    if (!media) return;
+    const h = media.getBoundingClientRect().height;
+    if (h > 0) root.style.setProperty("--pc-nav-band", `${Math.round(h)}px`);
+  };
+
+  const goToSlide = (index, smooth) => {
+    const i = clampIndex(index);
+    const slide = slides[i];
+    if (!slide) return;
+
+    /* scrollIntoView() walks ancestor scrollers and causes peek / “nested” scroll bugs */
+    track.scrollTo({
+      left: slide.offsetLeft,
+      behavior: smooth ? "smooth" : "auto",
+    });
+
+    dots.forEach((dot, di) => {
+      const on = di === i;
+      dot.classList.toggle("is-active", on);
+      dot.setAttribute("aria-selected", on ? "true" : "false");
+    });
+
+    if (prevBtn) prevBtn.disabled = i <= 0;
+    if (nextBtn) nextBtn.disabled = i >= slides.length - 1;
+
+    requestAnimationFrame(syncNavBand);
+  };
+
+  let raf = null;
+  const onScroll = () => {
+    if (raf !== null) return;
+    raf = requestAnimationFrame(() => {
+      const i = activeIndexFromScroll();
+      dots.forEach((dot, di) => {
+        const on = di === i;
+        dot.classList.toggle("is-active", on);
+        dot.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      if (prevBtn) prevBtn.disabled = i <= 0;
+      if (nextBtn) nextBtn.disabled = i >= slides.length - 1;
+      syncNavBand();
+      raf = null;
     });
   };
 
   dots.forEach((dot) => {
     dot.addEventListener("click", () => {
-      const index = Number(dot.getAttribute("data-project-dot"));
-      if (!Number.isFinite(index)) return;
-      scrollToIndex(index);
+      const i = Number(dot.getAttribute("data-carousel-dot"));
+      if (Number.isFinite(i)) goToSlide(i, true);
     });
   });
 
-  prevButton?.addEventListener("click", () => {
-    scrollToIndex(activeIndexFromScroll() - 1);
+  prevBtn?.addEventListener("click", () => {
+    goToSlide(activeIndexFromScroll() - 1, true);
   });
 
-  nextButton?.addEventListener("click", () => {
-    scrollToIndex(activeIndexFromScroll() + 1);
+  nextBtn?.addEventListener("click", () => {
+    goToSlide(activeIndexFromScroll() + 1, true);
   });
 
-  track.addEventListener("scroll", syncOnScroll, { passive: true });
+  track.addEventListener("scroll", onScroll, { passive: true });
+
   window.addEventListener("resize", () => {
-    const index = activeIndexFromScroll();
-    setActiveDot(index);
-    setArrowState(index);
+    goToSlide(activeIndexFromScroll(), false);
+    requestAnimationFrame(syncNavBand);
   });
 
-  setActiveDot(0);
-  setArrowState(0);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      goToSlide(0, false);
+      syncNavBand();
+    });
+  });
 })();
