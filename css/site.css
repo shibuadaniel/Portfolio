@@ -294,6 +294,44 @@ body.single-page section {
   margin-bottom: 1.5rem;
 }
 
+/* Tighter stack: intro → Projects */
+body.single-page #description {
+  padding-bottom: 1.1rem;
+  margin-bottom: 0.55rem;
+}
+
+body.single-page #projects {
+  padding-top: 0.9rem;
+}
+
+/* Intro bullets — panel instead of horizontal rules */
+body.single-page .description-panel {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 0.95rem 1.05rem 1rem;
+  margin-top: 1.05rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+body.single-page .description-panel ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+body.single-page .description-panel li + li {
+  margin-top: 0.5rem;
+}
+
+/* Projects heading: skip redundant rule line (carousel card already frames content) */
+body.single-page #projects > h2 {
+  border-bottom: none;
+  padding-bottom: 0.15rem;
+  margin-bottom: 0.35rem;
+}
+
 body.single-page .side-column section {
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -455,12 +493,6 @@ article + article {
   line-height: 1.8;
 }
 
-.content-divider {
-  border: none;
-  border-top: 1px solid var(--line);
-  margin: 1.05rem 0 1.15rem;
-}
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -581,7 +613,7 @@ article + article {
 
 /* Project showcase carousel — one hero at a time */
 .project-carousel {
-  margin: 0.85rem 0 0;
+  margin: 0.45rem 0 0;
   position: relative;
 }
 
@@ -783,6 +815,44 @@ body.single-page .project-hero {
   .project-carousel-arrow {
     min-width: 1.75rem;
     height: 1.75rem;
+  }
+}
+
+/* Single column (mobile / tablet): one vertical rhythm for main + stacked sidebar */
+@media (max-width: 1023px) {
+  body.single-page .single-page-layout {
+    gap: 1rem;
+  }
+
+  body.single-page section {
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  body.single-page #description {
+    padding-top: 1.35rem;
+    padding-bottom: 0.95rem;
+    margin-bottom: 0.45rem;
+  }
+
+  body.single-page #projects {
+    padding-top: 0.75rem;
+    padding-bottom: 1.1rem;
+  }
+
+  body.single-page .description-panel {
+    margin-top: 0.85rem;
+    padding: 0.85rem 0.95rem 0.9rem;
+  }
+
+  body.single-page .side-column section {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  body.single-page .side-column {
+    gap: 0.85rem;
   }
 }
 
