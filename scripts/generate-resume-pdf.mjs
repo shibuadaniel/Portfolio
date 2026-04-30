@@ -34,7 +34,14 @@ await page.pdf({
   format: "Letter",
   printBackground: true,
   preferCSSPageSize: true,
-  margin: { top: "0.5in", right: "0.5in", bottom: "0.5in", left: "0.5in" },
+  displayHeaderFooter: true,
+  headerTemplate: `<div></div>`,
+  footerTemplate: `
+    <div style="width:100%; font-size:9px; color:#555; padding:0 0.5in 0.08in 0; text-align:right;">
+      <span class="pageNumber"></span>
+    </div>
+  `,
+  margin: { top: "0.5in", right: "0.5in", bottom: "0.7in", left: "0.5in" },
 });
 await browser.close();
 
