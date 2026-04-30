@@ -50,48 +50,40 @@ body.resume-page {
 }
 
 .resume-download-btn {
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.4rem 0.9rem;
-  border-radius: 8px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border: none;
+  background: transparent;
+  color: var(--accent);
   text-decoration: none;
-  display: inline-block;
+  font-size: 1.35rem;
+  line-height: 1;
+  border-radius: 4px;
 }
 
 .resume-download-btn:hover,
 .resume-download-btn:focus-visible {
-  filter: brightness(1.08);
-  outline: none;
-}
-
-.resume-print-btn {
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.4rem 0.9rem;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--panel-alt);
   color: var(--text);
+  outline: none;
 }
 
-.resume-print-btn:hover,
-.resume-print-btn:focus-visible {
-  border-color: var(--accent);
-  color: var(--accent);
-  outline: none;
+.resume-download-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--accent);
 }
 
 @media print {
   @page {
     size: letter;
     margin: 0.5in;
+  }
+
+  /* Full bleed white: global `section` uses --panel (cream); nested sections are not #main > section */
+  html.resume-doc,
+  html.resume-doc body.resume-page {
+    background: #fff !important;
+    background-image: none !important;
   }
 
   body.resume-page .resume-nav-panel,
@@ -101,20 +93,38 @@ body.resume-page {
   }
 
   body.resume-page {
-    background: #fff !important;
     font-size: 11pt;
     line-height: 1.45;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
 
+  body.resume-page main,
+  body.resume-page .main-column,
+  body.resume-page .side-column,
+  body.resume-page .content-grid,
+  body.resume-page article {
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  /* Strip “card” panels everywhere (including nested sections in main-column / side-column) */
+  body.resume-page section,
   body.resume-page .panel,
-  body.resume-page #main > section {
+  body.resume-page aside {
+    background-color: #fff !important;
+    background-image: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    border: none !important;
     padding: 0 !important;
     margin: 0 0 0.85rem !important;
-    background: transparent !important;
+    outline: none !important;
+  }
+
+  body.resume-page article + article {
+    border-top: none !important;
+    padding-top: 0.65rem !important;
   }
 
   /* Allow articles to split across pages (avoid huge blank gaps). */
