@@ -14,8 +14,21 @@
     <a class="skip-link" href="#main">Skip to content</a>
 
     <main id="main">
-      <section class="panel">
-        <p><a href="index.html">← Back</a></p>
+      <section class="panel resume-nav-panel" aria-label="Page navigation">
+        <div class="resume-nav-row">
+          <p><a href="index.html">← Back</a></p>
+          <div class="resume-nav-actions">
+            <a
+              class="resume-download-btn"
+              href="documents/resume.pdf"
+              download="Shibu-A-Daniel-Resume.pdf"
+              >Download PDF</a
+            >
+            <button type="button" class="resume-print-btn" id="resume-print-pdf">
+              Print
+            </button>
+          </div>
+        </div>
       </section>
 
       <section class="panel resume-title-block">
@@ -295,7 +308,7 @@
         </aside>
       </div>
 
-      <section class="panel">
+      <section class="panel resume-nav-panel" aria-label="End navigation">
         <p><a href="index.html">← Back</a></p>
       </section>
     </main>
@@ -306,5 +319,10 @@
         <a href="mailto:shibuadaniel@gmail.com">shibuadaniel@gmail.com</a>
       </p>
     </footer>
+    <script>
+      document.getElementById("resume-print-pdf")?.addEventListener("click", function () {
+        window.print();
+      });
+    </script>
   </body>
 </html>

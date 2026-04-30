@@ -29,6 +29,152 @@ body.resume-page {
   background: #ffffff;
 }
 
+/* Resume — nav row (Back + print/PDF) */
+.resume-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.resume-nav-row p {
+  margin: 0;
+}
+
+.resume-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.resume-download-btn {
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.resume-download-btn:hover,
+.resume-download-btn:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}
+
+.resume-print-btn {
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel-alt);
+  color: var(--text);
+}
+
+.resume-print-btn:hover,
+.resume-print-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+
+  body.resume-page .resume-nav-panel,
+  body.resume-page .skip-link,
+  body.resume-page .site-footer {
+    display: none !important;
+  }
+
+  body.resume-page {
+    background: #fff !important;
+    font-size: 11pt;
+    line-height: 1.45;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body.resume-page .panel,
+  body.resume-page #main > section {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 0 0.85rem !important;
+    background: transparent !important;
+  }
+
+  /* Allow articles to split across pages (avoid huge blank gaps). */
+  body.resume-page article h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  body.resume-page .resume-title-block {
+    margin-bottom: 1rem !important;
+  }
+
+  body.resume-page .resume-title-block h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  body.resume-page h2 {
+    font-size: 1.05rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.45rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  body.resume-page h3 {
+    font-size: 0.98rem;
+  }
+
+  /* Single column (mobile-style): main body first, Toolset + Education at bottom */
+  body.resume-page .content-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1.15rem !important;
+  }
+
+  body.resume-page .side-column {
+    position: static !important;
+    top: auto !important;
+  }
+
+  body.resume-page ul {
+    margin-top: 0.35rem;
+    padding-left: 1.1rem;
+  }
+
+  body.resume-page li + li {
+    margin-top: 0.2rem;
+  }
+
+  body.resume-page article + article {
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+  }
+
+  body.resume-page a {
+    color: var(--text) !important;
+    text-decoration: none !important;
+  }
+}
+
 body.style-zen {
   --bg: #f5f3ee;
   --panel: #fffdf8;

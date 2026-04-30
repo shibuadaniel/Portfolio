@@ -1,0 +1,11 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pdf": "node scripts/generate-resume-pdf.mjs"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.15.0"
+  }
+}
