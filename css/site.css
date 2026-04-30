@@ -789,6 +789,10 @@ body.single-page .project-hero {
   font-size: 0.875rem;
 }
 
+.project-hero-external + .project-hero-external {
+  margin-top: 0.35rem;
+}
+
 .project-hero-external a {
   color: var(--accent);
   font-weight: 600;
