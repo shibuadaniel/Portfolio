@@ -776,8 +776,8 @@ article + article {
   margin: 0.45rem 0 0;
   /* Fixed hero media height per breakpoint so every slide matches (not width-derived). */
   --hero-media-h: 12.5rem;
-  /* Slight scale-down so cover crops less (1 = default tight cover). */
-  --hero-img-cover-scale: 0.9;
+  /* Full cover so project images fill the media frame. */
+  --hero-img-cover-scale: 1;
   /* Set by JS to match .project-hero-media height (mobile arrow band). */
   --pc-nav-band: var(--hero-media-h);
 }
